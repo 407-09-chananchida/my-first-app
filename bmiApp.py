@@ -10,28 +10,31 @@ height_cm = st.number_input("กรอกส่วนสูงของคุณ
 
 #ส่วนที่ 3 สร้างปุ่มกดคำนวณ
 if st.button("คำนวณค่า BMI🎯"):
-   #แปลงส่วนสูงจาก cm เป็น เมตร แล้วคำนวณ BMI
-   height_m = height_cm / 100
-   bmi = weight / (height_m ** 2)
 
-st.write("---")
-st.header(f"ค่า BMI ของคุณคือ: **{bmi:.2f}**")
+    height_m = height_cm / 100
 
-#ส่วนที่4 แปลผลค่า BMI ตามเกณฑ์
-if bmi < 18.5:
+    bmi = weight / (height_m ** 2)
 
-    st.warning("⚠️ คุณมีน้ำหนักน้อยกว่าเกณฑ์")
+    st.write("---")
 
-elif 18.5 <= bmi < 23.0:
+    st.header(f"ค่า BMI ของคุณคือ: **{bmi:.2f}**")
 
-    st.success("🎉 คุณมีน้ำหนักอยู่ในเกณฑ์ปกติ")
+    if bmi < 18.5:
 
-elif 23.0 <= bmi < 25.0:
+        st.warning("⚠️ คุณมีน้ำหนักน้อยกว่าเกณฑ์")
 
-    st.info("💡 คุณเริ่มมีน้ำหนักเกินเกณฑ์")
+    elif 18.5 <= bmi < 23.0:
 
-else:
+        st.success("🎉 คุณมีน้ำหนักอยู่ในเกณฑ์ปกติ")
 
-    st.error("🚨 คุณอยู่ในเกณฑ์อ้วน")  
+    elif 23.0 <= bmi < 25.0:
 
-st.write("นางสาวชนัญชิดา ไหวยะ เลขที่9 ม.4/7")
+        st.info("💡 คุณเริ่มมีน้ำหนักเกินเกณฑ์")
+
+    else:
+
+        st.error("🚨 คุณอยู่ในเกณฑ์อ้วน")
+
+st.divider()
+
+st.write("นางสาวชนัญชิดา ไหวะ เลขที่ 9 ม.4/7")
