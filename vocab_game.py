@@ -8,12 +8,20 @@ if "ans1_val" not in st.session_state:
     st.session_state.ans1_val = ""
 if "ans2_val" not in st.session_state:
     st.session_state.ans2_val = ""
+# 📌 [จุดที่ 1] เพิ่มการกำหนดค่าเริ่มต้น ans3_val และ ans4_val
+if "ans3_val" not in st.session_state:
+    st.session_state.ans3_val = ""
+if "ans4_val" not in st.session_state:
+    st.session_state.ans4_val = ""
 
 
 # 📌 ฟังก์ชันเคลียร์ค่าเมื่อกดปุ่มเริ่มใหม่
 def reset_game():
     st.session_state.ans1_val = ""  # เคลียร์ค่าช่องข้อ 1
     st.session_state.ans2_val = ""  # เคลียร์ค่าช่องข้อ 2
+    # 📌 [จุดที่ 2] เพิ่มการเคลียร์ค่า st.session_state.ans3_val และ st.session_state.ans4_val
+    st.session_state.ans3_val = ""  # เคลียร์ค่าช่องข้อ 3
+    st.session_state.ans4_val = ""  # เคลียร์ค่าช่องข้อ 4
     st.session_state.start = time.time()  # เริ่มเวลาใหม่
     st.session_state.is_ended = False  # ปิด Dialog
 
@@ -21,33 +29,51 @@ def reset_game():
 # ----------------------------------------------------
 # 📌 ฟังก์ชัน MessageBox (Dialog)
 # ----------------------------------------------------
+# 📌 [จุดที่ 8] เพิ่มพารามิเตอร์ ans3, ans4 เข้าไปใน Dialog
 @st.dialog("📊 สรุปผลการเล่นเกม")
-def show_result_dialog(ans1, ans2):
+def show_result_dialog(ans1, ans2, ans3, ans4):
     st.balloons()
     score = 0
 
     u_ans1 = ans1.strip().lower()
     u_ans2 = ans2.strip().lower()
+    # 📌 [จุดที่ 3] สรุปผล u_ans3 และ u_ans4
+    u_ans3 = ans3.strip().lower()
+    u_ans4 = ans4.strip().lower()
 
-    # ตรวจข้อ 1
+    # ตรวจข้อ 1: apple
     if u_ans1 == "apple":
         st.success("✅ ข้อ 1: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 1: ยังไม่ถูกต้อง (คุณตอบ '{u_ans1}')")
 
-    # ตรวจข้อ 2
+    # ตรวจข้อ 2: fish
     if u_ans2 == "fish":
         st.success("✅ ข้อ 2: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 2: ยังไม่ถูกต้อง (คุณตอบ '{u_ans2}')")
 
-    # ✏️ [พื้นที่สำหรับนักเรียน]: เพิ่มตรวจข้อ 3, 4 ตรงนี้
+    # 📌 [จุดที่ 4] เพิ่มตรวจข้อ 3 และตรวจข้อ 4
+    # ตรวจข้อ 3: banana
+    if u_ans3 == "banana":
+        st.success("✅ ข้อ 3: ถูกต้อง")
+        score += 1
+    else:
+        st.error(f"❌ ข้อ 3: ยังไม่ถูกต้อง (คุณตอบ '{u_ans3}')")
+
+    # ตรวจข้อ 4: pencil
+    if u_ans4 == "pencil":
+        st.success("✅ ข้อ 4: ถูกต้อง")
+        score += 1
+    else:
+        st.error(f"❌ ข้อ 4: ยังไม่ถูกต้อง (คุณตอบ '{u_ans4}')")
 
     st.info(f"🏆 ได้คะแนนรวม: {score} คะแนน")
 
-    if score == 2:
+    # 📌 [จุดที่ 5] เปลี่ยนเงื่อนไขชนะเป็น score == 4
+    if score == 4:
         st.success("🎉 You win!")
     else:
         st.error("💀 You lose!")
@@ -70,9 +96,9 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
 
 st.divider()
 
-# 3. ช่องรับคำตอบ (ใช้ value ผูกกับตัวแปรตรงๆ เพื่อสั่งเคลียร์ได้)
+# 3. ช่องรับคำตอบ
 ans1 = st.text_input(
-     "ข้อ 1: An `a _ _ l e` a day keeps the doctor away. 🍎",
+    "ข้อ 1: An `a _ _ l e` a day keeps the doctor away. 🍎",
     value=st.session_state.ans1_val,
 )
 ans2 = st.text_input(
@@ -80,12 +106,21 @@ ans2 = st.text_input(
     value=st.session_state.ans2_val,
 )
 
-# อัปเดตค่าล่าสุดเข้าตัวแปร
+# 📌 [จุดที่ 6] เพิ่มช่องรับคำตอบ ans3 = st.text_input และ ans4 = st.text_input
+ans3 = st.text_input(
+    "ข้อ 3: Monkeys like to eat `b _ n _ n _`. 🍌",
+    value=st.session_state.ans3_val,
+)
+ans4 = st.text_input(
+    "ข้อ 4: I write with a `p _ n c _ l`. ✏️",
+    value=st.session_state.ans4_val,
+)
+
+# 📌 [จุดที่ 7] เพิ่มการอัปเดตค่าล่าสุดเข้าตัวแปร st.session_state.ans3_val และ st.session_state.ans4_val
 st.session_state.ans1_val = ans1
 st.session_state.ans2_val = ans2
-
-# ✏️ [พื้นที่สำหรับนักเรียน]: เพิ่มข้อ 3, 4 ตรงนี้
-
+st.session_state.ans3_val = ans3
+st.session_state.ans4_val = ans4
 
 # 4. ปุ่มส่งคำตอบ
 if "start" in st.session_state and not st.session_state.get("is_ended", False):
@@ -96,10 +131,9 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
     time.sleep(1)
     st.rerun()
 
-# 5. แสดง Dialog ผลลัพธ์
+# 📌 [จุดที่ 8] เพิ่มการแสดง Dialog ผลลัพธ์ โดยส่งค่า ans3, ans4
 if st.session_state.get("is_ended", False):
-    show_result_dialog(ans1, ans2)
+    show_result_dialog(ans1, ans2, ans3, ans4)
 
 st.divider()
 st.write("นางสาวชนัญชิดา ไหวยะ เลขที่ 9 ม.4/7")
-
